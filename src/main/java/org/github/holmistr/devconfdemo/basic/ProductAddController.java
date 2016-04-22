@@ -20,6 +20,7 @@ import org.github.holmistr.devconfdemo.entity.Product;
 import org.infinispan.Cache;
 import org.infinispan.manager.DefaultCacheManager;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -47,6 +48,16 @@ public class ProductAddController {
     private double price;
 
     private String message;
+
+    @PostConstruct
+    public void reset () {
+        Cache<Long, Product> cache = cacheManager.getCache();
+        cache.putIfAbsent(1L, new Product(1L, "Nike Air Max", "Clay court tennis shoes", 10, 90));
+        cache.putIfAbsent(2L, new Product(2L, "Adidas Novak Pro", "All court tennis shoes", 20, 110));
+        cache.putIfAbsent(3L, new Product(3L, "Asics Solution Speed", "Clay court tennis shoes", 5, 100));
+        cache.putIfAbsent(4L, new Product(4L, "Samsung Galaxy S7", "5.1 inch phone", 10, 600));
+        cache.putIfAbsent(5L, new Product(5L, "Apple iPhone 6s", "4.7 inch phone", 20, 600));
+    }
 
     public void add() {
         Cache<Long, Product> cache = cacheManager.getCache();

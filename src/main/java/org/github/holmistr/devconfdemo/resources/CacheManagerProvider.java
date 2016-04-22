@@ -43,7 +43,11 @@ public class CacheManagerProvider {
 
             Configuration loc = new ConfigurationBuilder()
                     .clustering().cacheMode(CacheMode.REPL_SYNC) // Set Cache mode to DISTRIBUTED with SYNCHRONOUS replication
-                    .indexing().index(Index.LOCAL)
+                    //.indexing().index(Index.LOCAL)
+                    .indexing()
+                        .index(Index.ALL) // Works only with REPL caches
+                        .addProperty("default.directory_provider", "ram")
+                        .addProperty("hibernate.search.default.exclusive_index_use", "false")
                     .build();
 
             manager = new DefaultCacheManager(glob, loc, true);
